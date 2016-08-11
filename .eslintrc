@@ -1,0 +1,28 @@
+# JavaScript Standard Style Guide: http://standardjs.com
+# https://github.com/feross/eslint-config-standard-react
+extends:
+  - standard
+  - standard-react
+
+parserOptions:
+  sourceType: module
+  ecmaFeatures:
+    modules: true
+    jsx: true
+
+env:
+  amd: true
+  browser: true
+  es6: true
+  jquery: true
+  node: true
+
+globals:
+    React: true
+    ReactDOM: true
+    webtrekkV3: true
+
+rules:
+  jsx-quotes: [2, prefer-single]
+  react/jsx-no-bind: [0]
+  react/prop-types: [0]
