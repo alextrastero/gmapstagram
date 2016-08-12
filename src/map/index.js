@@ -108,7 +108,7 @@ Map.propTypes = {
   }).isRequired,
   onMapClick: PropTypes.func.isRequired,
   onMapLoaded: PropTypes.func.isRequired,
-  pics: PropTypes.array
+  pics: PropTypes.array.isRequired
 }
 
 export default Map

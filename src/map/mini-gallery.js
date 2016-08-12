@@ -13,7 +13,7 @@ const style = {
 }
 
 const MiniGallery = ({ pics }) =>
-  <div style={style}>
+  <div className='mini-gallery' style={style}>
     {
       pics.map((pic, idx) =>
         <div key={`pic-${idx}`} style={{marginRight: '10px'}}>
