@@ -11,7 +11,7 @@ class Map extends Component {
     this.markers = []
     this.handleMapClick = this.handleMapClick.bind(this)
     this.generateMap = this.generateMap.bind(this)
-    this.renderMarkers = this.renderMarkers.bind(this)
+    this.createMarkers = this.createMarkers.bind(this)
   }
 
   componentWillMount () {
@@ -22,7 +22,7 @@ class Map extends Component {
     return nextProps.pics.length !== this.props.pics.length
   }
 
-  renderMarkers () {
+  createMarkers () {
     const { pics } = this.props
     this.clearAllMarkers()
 
@@ -42,7 +42,7 @@ class Map extends Component {
       let infowindow = new InfoWindow({
         content: this.renderPicTeaser(pic)
       })
-      marker.addListener('hover', () => infowindow.open(this.myMap, marker))
+      marker.addListener('click', () => infowindow.open(this.myMap, marker))
       return marker
     })
   }
@@ -81,10 +81,19 @@ class Map extends Component {
   }
 
   render () {
-    this.renderMarkers()
+    const headerStyle = {
+      position: 'absolute',
+      width: '100%',
+      zIndex: 1,
+      textAlign: 'center',
+      background: 'white',
+      padding: '10px 0'
+    }
 
+    this.createMarkers()
     return (
       <div>
+        <p style={headerStyle}>Click anywhere on the map to see Pictures in a radius of 5km</p>
         <MiniGallery pics={this.props.pics} />
         <div style={{height: '100vh'}} ref='gmap' />
       </div>

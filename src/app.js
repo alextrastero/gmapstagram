@@ -48,10 +48,38 @@ class App extends Component {
   }
 
   renderLogin () {
+    const backdropStyle = {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      zIndex: 4,
+      backgroundColor: 'rgba(0,0,0,.8)'
+    }
+
+    const modalStyle = {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      padding: '20px',
+      textAlign: 'center',
+      zIndex: '3',
+      overflow: 'auto',
+      width: '300px',
+      margin: '-40px 0 0 -200px',
+      backgroundColor: '#eeeeee',
+      border: '1px solid #333',
+      borderRadius: '4px',
+      backgroundClip: 'padding-box'
+    }
+
     return (
-      <div>
-        <p>You need to login to instagram to view</p>
-        <a href={AUTH_URL}>Login</a>
+      <div style={backdropStyle}>
+        <div style={modalStyle}>
+          <p>You need to login to instagram to view</p>
+          <a href={AUTH_URL}>Login</a>
+        </div>
       </div>
     )
   }

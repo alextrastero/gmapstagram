@@ -12,9 +12,8 @@ const style = {
   justifyContent: 'center'
 }
 
-const MiniGallery = ({ pics }) => {
-  return (
-    <div style={style}>
+const MiniGallery = ({ pics }) =>
+  <div style={style}>
     {
       pics.map((pic, idx) =>
         <div key={`pic-${idx}`} style={{marginRight: '10px'}}>
@@ -22,9 +21,7 @@ const MiniGallery = ({ pics }) => {
         </div>
       )
     }
-    </div>
-  )
-}
+  </div>
 
 MiniGallery.propTypes = {
   pics: PropTypes.array.isRequired
