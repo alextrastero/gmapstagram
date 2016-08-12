@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
+import MiniGallery from './mini-gallery'
 import loadGmap from './utils/gmap-loader'
 
 class Map extends Component {
@@ -26,15 +27,33 @@ class Map extends Component {
     this.clearAllMarkers()
 
     if (!pics.length) return
-    const { Marker, LatLng } = window.google.maps
+    const { Marker, LatLng, InfoWindow } = window.google.maps
 
     this.markers = pics.map((pic) => {
       const { latitude, longitude } = pic.location
-      return new Marker({
+
+      // createMarker
+      let marker = new Marker({
         position: new LatLng(latitude, longitude),
         map: this.myMap
       })
+
+      // createInfoWindow
+      let infowindow = new InfoWindow({
+        content: this.renderPicTeaser(pic)
+      })
+      marker.addListener('hover', () => infowindow.open(this.myMap, marker))
+      return marker
     })
+  }
+
+  renderPicTeaser (pic) {
+    return (
+      '<div>' +
+      `<p>${pic.caption.text}</p>` +
+      `<img src=${pic.images.thumbnail.url} width=150 height=150>` +
+      '</div>'
+    )
   }
 
   clearAllMarkers () {
@@ -65,7 +84,10 @@ class Map extends Component {
     this.renderMarkers()
 
     return (
-      <div style={{height: '100vh'}} ref='gmap' />
+      <div>
+        <MiniGallery pics={this.props.pics} />
+        <div style={{height: '100vh'}} ref='gmap' />
+      </div>
     )
   }
 }

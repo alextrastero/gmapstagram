@@ -57,11 +57,11 @@ class App extends Component {
   }
 
   renderInstagram () {
-    const { auth, latLng, instagramLoaded } = this.state
+    const { auth, latLng, instagramLoaded, mapLoaded } = this.state
 
     if (!auth) return this.renderLogin()
 
-    if (!instagramLoaded) {
+    if (mapLoaded && !instagramLoaded) {
       loadInstagram(this.token, latLng).then(this.handleInstagramLoaded)
     }
   }
