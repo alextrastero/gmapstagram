@@ -1,28 +1,39 @@
 import React, { Component } from 'react'
 import Map from './map'
-import Instagram from './instagram'
+
+import { getUrlToken, loadInstagram, AUTH_URL } from './utils'
 
 class App extends Component {
   constructor (props) {
     super(props)
 
+    this.token = getUrlToken()
     this.state = {
-      auth: false,
-      latLng: {
-        lat: 65.0061203,
-        lng: -18.5298597
+      auth: !!this.token,
+      latLng: { // Berlin
+        lat: 52.5151335,
+        lng: 13.4087289
       },
-      pictures: []
+      mapLoaded: false,
+      instagramLoaded: false,
+      pics: []
     }
 
-    this.handleLogin = this.handleLogin.bind(this)
     this.handleMapClicked = this.handleMapClicked.bind(this)
-    this.handlePicturesLoaded = this.handlePicturesLoaded.bind(this)
+    this.handleMapLoaded = this.handleMapLoaded.bind(this)
+    this.handleInstagramLoaded = this.handleInstagramLoaded.bind(this)
   }
 
-  handleLogin () {
+  handleMapLoaded () {
     this.setState({
-      auth: true
+      mapLoaded: true
+    })
+  }
+
+  handleInstagramLoaded ({ data }) {
+    this.setState({
+      instagramLoaded: true,
+      pics: data
     })
   }
 
@@ -31,32 +42,42 @@ class App extends Component {
       latLng: {
         lat: lat(),
         lng: lng()
-      }
+      },
+      instagramLoaded: false
     })
   }
 
-  handlePicturesLoaded ({ data }) {
-    this.setState({
-      pictures: data
-    })
+  renderLogin () {
+    return (
+      <div>
+        <p>You need to login to instagram to view</p>
+        <a href={AUTH_URL}>Login</a>
+      </div>
+    )
+  }
+
+  renderInstagram () {
+    const { auth, latLng, instagramLoaded } = this.state
+
+    if (!auth) return this.renderLogin()
+
+    if (!instagramLoaded) {
+      loadInstagram(this.token, latLng).then(this.handleInstagramLoaded)
+    }
   }
 
   render () {
-    const { auth, latLng, pictures } = this.state
+    const { latLng, pics } = this.state
 
     return (
       <div>
         <Map
           latLng={latLng}
           onMapClick={this.handleMapClicked}
+          onMapLoaded={this.handleMapLoaded}
+          pics={pics}
         />
-        <Instagram
-          auth={auth}
-          onLogin={this.handleLogin}
-          onPicturesLoaded={this.handlePicturesLoaded}
-          pictures={pictures}
-          position={latLng}
-        />
+        {this.renderInstagram()}
       </div>
     )
   }
