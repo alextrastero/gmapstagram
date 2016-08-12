@@ -15,7 +15,6 @@ npm start
 ### Bonus
 ```
 npm test
-npm run lint
 ```
 
 #### Optional
